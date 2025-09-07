@@ -89,7 +89,7 @@ public class Main {
         int id;
         while (true) {
             id = lerInt("Id do produto físico:");
-            if (clienteDao.pesquisarPorId(id) != null) {
+            if (produtoDao.pesquisarPorId(id) != null) {
                 System.out.println("Já existe um produto físico com esse Id. Escolha outro Id.");
             }else {
                 break;
@@ -114,7 +114,7 @@ public class Main {
         int id;
         while (true) {
             id = lerInt("Id do produto digital:");
-            if (clienteDao.pesquisarPorId(id) != null) {
+            if (produtoDao.pesquisarPorId(id) != null) {
                 System.out.println("Já existe um produto digital com esse Id. Escolha outro Id.");
             }else {
                 break;
