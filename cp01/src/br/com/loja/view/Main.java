@@ -27,11 +27,14 @@ public class Main {
                 case 1:
                     menuProdutos();
                     break;
+                case 2:
+                    menuClientes();
+                    break;
                 case 0:
                     System.out.println("Saindo");
                     break;
                 default:
-                    System.out.println("Opção inválida");
+                    System.out.println("\nOpção inválida");
             }
         } while (opcao != 0);
     }
@@ -43,14 +46,13 @@ public class Main {
             System.out.println("1 - Cadastrar produto físicos");
             System.out.println("2 - Cadastrar produto digital");
             System.out.println("3 - Listar produtos");
-            System.out.println("4 - Pesquisar por ID");
+            System.out.println("4 - Pesquisar por Id");
             System.out.println("5 - Editar produto");
             System.out.println("6 - Remover produto");
             System.out.println("7 - Pesquisar por nome do produto");
-            System.out.println("0 - Voltar");
-            System.out.println("Escolha: ");
-            opcao = leitor.nextInt();
-            leitor.nextLine();
+            System.out.println("0 - Voltar para menu anterior");
+            System.out.println("\nEscolha uma das opções: ");
+            opcao = lerInt("");
 
             switch (opcao) {
                 case 1:
@@ -76,7 +78,7 @@ public class Main {
                     break;
                 case 0:
                     break;
-                default: System.out.println("Opção inválida");
+                default: System.out.println("\nOpção inválida");
 
             }
         } while (opcao != 0);
@@ -84,7 +86,15 @@ public class Main {
 
     // métodos de produto
     private static void cadastrarProdutoFisico() {
-        int id = lerInt("Id do produto físico:");
+        int id;
+        while (true) {
+            id = lerInt("Id do produto físico:");
+            if (clienteDao.pesquisarPorId(id) != null) {
+                System.out.println("Já existe um produto físico com esse Id. Escolha outro Id.");
+            }else {
+                break;
+            }
+        }
         System.out.print("Nome do produto físico: ");
         String nome = leitor.next();
         System.out.print("Preço do produto físico (R$): ");
@@ -97,30 +107,39 @@ public class Main {
 
         ProdutoFisico pf = new ProdutoFisico(id, nome, preco, estoque, peso);
         produtoDao.cadastrar(pf);
-        System.out.println("Produto físico cadastrado!");
+        System.out.println("\nProduto físico cadastrado!");
     }
 
     private static void cadastrarProdutoDigital() {
-        int id = lerInt("Id do produto digital:");
+        int id;
+        while (true) {
+            id = lerInt("Id do produto digital:");
+            if (clienteDao.pesquisarPorId(id) != null) {
+                System.out.println("Já existe um produto digital com esse Id. Escolha outro Id.");
+            }else {
+                break;
+            }
+        }
         System.out.print("Nome produto digital: ");
         String nome = leitor.next();
-        System.out.print("Preço produto digital: ");
+        System.out.print("Preço produto digital (R$): ");
         double preco = leitor.nextDouble();
         System.out.print("Tamanho (MB) do produto digital: ");
         double tamanho = leitor.nextDouble();
+        leitor.nextLine();
         System.out.print("Formato produto digital: ");
         String formato = leitor.nextLine();
 
         ProdutoDigital pd = new ProdutoDigital(id, nome, preco, tamanho, formato);
         produtoDao.cadastrar(pd);
-        System.out.println("Produto cadastrado com sucesso!");
+        System.out.println("\nProduto cadastrado com sucesso!");
     }
 
     private static void listarProdutos() {
         System.out.println("\n -- Lista de produtos --");
         List<Produto> lista = produtoDao.listar();
         if (lista.isEmpty()) {
-            System.out.println("Nenhum produto cadastrado!");
+            System.out.println("\nNenhum produto cadastrado!");
         } else {
             for (Produto p : lista) {
                 System.out.println(p);
@@ -132,14 +151,14 @@ public class Main {
         Produto p = produtoDao.pesquisarPorId(id);
         if (p != null) {
             System.out.println(p);
-        } else System.out.println("Produto não encontrado. Tente novamente.");
+        } else System.out.println("\nProduto não encontrado. Tente novamente.");
     }
 
     private static void editarProduto() {
         int id = lerInt("Id do produto para editar:");
         Produto p = produtoDao.pesquisarPorId(id);
         if (p == null) {
-            System.out.println("Produto não encontrado!");
+            System.out.println("\nProduto não encontrado!");
             return;
         }
         System.out.print("Novo nome: ");
@@ -171,13 +190,13 @@ public class Main {
             pd.setTamanhoArquivo(tamanho);
         }
         produtoDao.editar(p);
-        System.out.println("Produto editado com sucesso!");
+        System.out.println("\nProduto editado com sucesso!");
     }
 
     private static void removerProduto() {
         int id = lerInt("Id do produto para ser removido:");
         produtoDao.remover(id);
-        System.out.println("Produto removido com sucesso!");
+        System.out.println("\nProduto removido com sucesso!");
     }
 
     private static void pesquisarProdutoPorNome() {
@@ -185,7 +204,7 @@ public class Main {
         String nome = leitor.nextLine();
         List<Produto> encontrados = produtoDao.pesquisaPorNome(nome);
         if (encontrados.isEmpty()) {
-            System.out.println("Nenhum produto encontrado");
+            System.out.println("\nNenhum produto encontrado");
         } else {
             for (Produto p : encontrados) {
                 System.out.println(p);
@@ -205,6 +224,128 @@ public class Main {
             }
         }
         return id;
+
+    }
+
+    //Menu de clientes
+    private static void menuClientes() {
+        int opcao;
+        do {
+            System.out.println("\n==== Clientes ====");
+            System.out.println("1 - Cadastrar cliente");
+            System.out.println("2 - Listar clientes");
+            System.out.println("3 - Pesquisar por Id");
+            System.out.println("4 - Editar cliente");
+            System.out.println("5 - Remover cliente");
+            System.out.println("6 - Pesquisar por nome do cliente");
+            System.out.println("0 - Voltar para menu anterior");
+            System.out.println("\nEscolha uma das opções: ");
+            opcao = lerInt("");
+
+            switch (opcao) {
+                case 1:
+                    cadastrarCliente();
+                    break;
+                case 2:
+                    listarClientes();
+                    break;
+                case 3:
+                    pesquisarClientePorId();
+                    break;
+                case 4:
+                    editarCliente();
+                    break;
+                case 5:
+                    removerCliente();
+                    break;
+                case 6:
+                    pesquisarClientePorNome();
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Opção inválida");
+
+            }
+        } while (opcao != 0);
+    }
+
+    private static void cadastrarCliente() {
+        int id;
+        while (true) {
+            id = lerInt("Id do cliente:");
+            if (clienteDao.pesquisarPorId(id) != null) {
+                System.out.println("Já existe um cliente com esse Id. Escolha outro Id.");
+            }else {
+                break;
+            }
+        }
+        System.out.print("Nome do cliente: ");
+        String nome = leitor.nextLine();
+        System.out.print("Email do cliente: ");
+        String email = leitor.nextLine();
+
+
+        Cliente cl = new Cliente(id, nome, email);
+        clienteDao.cadastrar(cl);
+        System.out.println("\nCliente cadastrado com sucesso!");
+    }
+
+    private static void listarClientes() {
+        System.out.println("\n -- Lista de clientes --");
+        List<Cliente> lista = clienteDao.listar();
+        if (lista.isEmpty()) {
+            System.out.println("\nNenhum cliente cadastrado!");
+        } else {
+            for (Cliente cl : lista) {
+                System.out.println(cl);
+            }
+        }
+    }
+
+    private static void pesquisarClientePorId(){
+        int id = lerInt("Id do cliente:");
+        Cliente cl = clienteDao.pesquisarPorId(id);
+            if (cl != null) {
+                System.out.println(cl);
+            } else System.out.println("\nCliente não encontrado. Tente novamente.");
+    }
+
+    private static void editarCliente() {
+        int id = lerInt("Id do cliente:");
+        Cliente cl = clienteDao.pesquisarPorId(id);
+        if (cl == null) {
+            System.out.println("\nCliente não encontrado");
+            return;
+        }
+        System.out.print("Novo nome: ");
+        String nome = leitor.nextLine();
+        System.out.print("Novo email: ");
+        String email = leitor.next();
+
+        cl.setNome(nome);
+        cl.setEmail(email);
+        clienteDao.editar(cl);
+        System.out.println("\nCliente editado com sucesso");
+    }
+
+    private static void removerCliente() {
+        int id = lerInt("Id do cliente:");
+        clienteDao.remover(id);
+        System.out.println("\nCliente removido com sucesso");
+    }
+
+    private static void pesquisarClientePorNome(){
+        System.out.print("Nome do cliente: ");
+        String nome = leitor.nextLine();
+        List<Cliente> encontrados = clienteDao.pesquisaPorNome(nome);
+        if (encontrados.isEmpty()){
+            System.out.println("\nNenhum cliente encontrado!");
+        } else {
+            for (Cliente cl : encontrados){
+                System.out.println(cl);
+            }
+        }
 
     }//main
 
