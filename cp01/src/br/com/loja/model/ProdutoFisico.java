@@ -6,7 +6,7 @@ public class ProdutoFisico extends Produto{
     private int estoque;
 
     public ProdutoFisico(int idProduto, String nome, double preco, int estoque, double peso) {
-        super(idProduto, nome, preco, estoque);
+        super(idProduto, nome, preco);
         this.peso = peso;
         this.estoque = estoque;
     }
@@ -27,6 +27,6 @@ public class ProdutoFisico extends Produto{
 
     @Override
     public String toString() {
-        return super.toString() + "Peso: " + peso + "kg | Estoque: " + estoque;
+        return "Id: " + getIdProduto() + " | Nome: " + getNome() + " | Preço (R$): " + getPreco() + " | Peso (Kg): " + getPeso() + " | Estoque: " + getEstoque();
     }
 }

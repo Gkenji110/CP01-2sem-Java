@@ -26,6 +26,6 @@ public class ProdutoDigital extends Produto{
 
     @Override
     public String toString() {
-        return super.toString()+ "Tamanho: " + tamanhoArquivo + " MB | Formato: " + formato;
+        return "Id: " + getIdProduto() + " | Nome: " + getNome() + " | Preço (R$): " + getPreco() + " | Tamnho (Mb): " + getTamanhoArquivo() + " | Formato: " + getFormato();
     }
 }
