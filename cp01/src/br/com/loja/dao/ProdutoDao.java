@@ -11,7 +11,7 @@ public class ProdutoDao {
 
     private Map<Integer, Produto> produtos = new HashMap<>();
 
-    private void cadastrar(Produto produto) {
+    public void cadastrar(Produto produto) {
         produtos.put(produto.getIdProduto(), produto);
     }
 
